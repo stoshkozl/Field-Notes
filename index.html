@@ -1,43 +1,512 @@
-FieldNotes
-PROPERTY SITE LOG
-↓ EXPORT CSV
-NEW ENTRY
-PROPERTY ADDRESS
 
-🎤
-CLIENT NAME
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Property Field Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f5f2eb; --surface: #fffef9; --ink: #1a1810; --ink-muted: #6b6558;
+    --accent: #2d5a3d; --accent-light: #e8f0eb; --danger: #8b2e2e;
+    --border: #d6d0c4; --shadow: 0 2px 12px rgba(26,24,16,0.08); --radius: 6px;
+  }
+  body { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--ink); min-height: 100vh; padding: 32px 24px; }
+  header { max-width: 960px; margin: 0 auto 32px; display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 2px solid var(--ink); padding-bottom: 16px; }
+  .logo { font-family: 'Playfair Display', serif; font-size: 26px; line-height: 1; }
+  .logo span { color: var(--accent); }
+  .subtitle { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
 
-🎤
-ROOFER NAME
+  /* New Entry Card */
+  .dictation-card { max-width: 960px; margin: 0 auto 28px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
+  .card-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 14px; }
+  .fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .field-group { display: flex; flex-direction: column; gap: 5px; position: relative; }
+  .field-group label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); }
+  .field-input-wrap { display: flex; gap: 6px; align-items: center; }
+  input[type="text"] { font-family: 'DM Mono', monospace; font-size: 13px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 9px 12px; color: var(--ink); width: 100%; outline: none; transition: border-color 0.15s; }
+  input[type="text"]:focus { border-color: var(--accent); }
+  input[type="text"]::placeholder { color: var(--ink-muted); opacity: 0.5; }
 
-🎤
-EVALUATOR
+  /* Mic buttons — small inline */
+  .mic-sm { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--accent); background: var(--surface); color: var(--accent); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; transition: all 0.15s; }
+  .mic-sm:hover { background: var(--accent-light); }
+  .mic-sm.recording { background: var(--danger); border-color: var(--danger); color: #fff; animation: pulse 1.2s ease-in-out infinite; }
 
-🎤
-FILE LOCATION
+  /* Main notes mic */
+  .mic-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+  .transcript-area { flex: 1; min-height: 72px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 13px; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--ink); outline: none; transition: border-color 0.15s; line-height: 1.6; }
+  .transcript-area:focus { border-color: var(--accent); }
+  .mic-btn { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--accent); background: var(--surface); color: var(--accent); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; font-size: 22px; }
+  .mic-btn:hover { background: var(--accent-light); }
+  .mic-btn.recording { background: var(--danger); border-color: var(--danger); color: #fff; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(139,46,46,0.4); } 50% { box-shadow: 0 0 0 10px rgba(139,46,46,0); } }
+  .mic-status { font-size: 10px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; text-align: center; margin-top: 5px; }
+  .mic-wrapper { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .action-row { display: flex; gap: 10px; justify-content: flex-end; }
+  .btn { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 20px; border-radius: var(--radius); cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #1e3d29; }
+  .btn-ghost { background: transparent; color: var(--ink-muted); border-color: var(--border); }
+  .btn-ghost:hover { border-color: var(--ink-muted); color: var(--ink); }
+  .btn-export { background: transparent; color: var(--accent); border-color: var(--accent); }
+  .btn-export:hover { background: var(--accent-light); }
 
-🎤
-PRIVATE OR LDI
-          -- Select --
-          Private
-          LDI
-        
-🎤
-TAP TO SPEAK
+  /* Table */
+  .table-wrap { max-width: 960px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow-x: auto; }
+  .table-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--bg); }
+  .note-count { font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { text-align: left; padding: 10px 16px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); border-bottom: 1px solid var(--border); background: var(--bg); white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--accent-light); }
+  td { padding: 0; vertical-align: top; }
 
-CLEAR
-+ ADD TO LOG
-0 ENTRIES
-CLICK ANY CELL TO EDIT • 🎤 TO DICTATE
-DATE / TIME
-PROPERTY
-CLIENT
-ROOFER
-EVALUATOR
-FILE LOCATION
-TYPE
-NOTES
+  /* Editable cells */
+  .cell-wrap { display: flex; align-items: flex-start; gap: 4px; padding: 9px 10px 9px 14px; min-height: 38px; }
+  .cell-text { flex: 1; outline: none; min-width: 60px; line-height: 1.55; white-space: pre-wrap; word-break: break-word; cursor: text; border-radius: 3px; padding: 2px 4px; transition: background 0.1s; }
+  .cell-text:focus { background: rgba(45,90,61,0.07); box-shadow: 0 0 0 1.5px var(--accent); }
+  .cell-text.placeholder-active { color: var(--ink-muted); opacity: 0.4; }
+  .cell-mic { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border); background: transparent; color: var(--ink-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; transition: all 0.15s; opacity: 0; margin-top: 1px; }
+  tbody tr:hover .cell-mic, .cell-text:focus ~ .cell-mic, .cell-mic.recording { opacity: 1; }
+  .cell-mic:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .cell-mic.recording { border-color: var(--danger); color: var(--danger); background: #fdf0f0; animation: pulse 1.2s ease-in-out infinite; }
+  .td-date { white-space: nowrap; font-size: 11px; color: var(--ink-muted); padding: 11px 16px; vertical-align: top; min-width: 90px; }
+  .td-actions { padding: 9px 14px 9px 6px; vertical-align: top; white-space: nowrap; }
+  .td-delete { cursor: pointer; color: var(--border); font-size: 14px; transition: color 0.15s; background: none; border: none; font-family: inherit; padding: 2px 4px; }
+  .td-delete:hover { color: var(--danger); }
+  .empty-state { padding: 48px 20px; text-align: center; color: var(--ink-muted); font-size: 12px; line-height: 1.8; }
+  .empty-state .big { font-size: 28px; display: block; margin-bottom: 8px; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--ink); color: #fff; padding: 10px 20px; border-radius: var(--radius); font-size: 12px; letter-spacing: 0.04em; opacity: 0; transition: all 0.3s ease; pointer-events: none; z-index: 100; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .no-support { background: #fff3cd; border: 1px solid #ffc107; color: #856404; padding: 10px 14px; border-radius: var(--radius); font-size: 11px; margin-bottom: 12px; display: none; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="logo">Field<span>Notes</span></div>
+    <div class="subtitle">Property Site Log</div>
+  </div>
+  <div>
+    <button class="btn btn-export" onclick="exportCSV()">&#8595; Export CSV</button>
+  </div>
+</header>
 
-📋
-No entries yet. Fill in a property and dictate your first note.
+<div class="dictation-card">
+  <div class="card-label">New Entry</div>
+  <div class="no-support" id="noSupport">&#9888; Voice dictation requires Chrome or Edge. You can still type notes manually.</div>
+  <div class="fields-row">
+    <div class="field-group">
+      <label>Property Address</label>
+      <div class="field-input-wrap">
+        <input type="text" id="propAddress" placeholder="123 Oak Street" />
+        <button class="mic-sm" onclick="dictateInto('propAddress', this)" title="Dictate">&#127908;</button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Client Name</label>
+      <div class="field-input-wrap">
+        <input type="text" id="clientName" placeholder="Smith, J." />
+        <button class="mic-sm" onclick="dictateInto('clientName', this)" title="Dictate">&#127908;</button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Roofer Name</label>
+      <div class="field-input-wrap">
+        <input type="text" id="rooferName" placeholder="Roofer / Contractor" />
+        <button class="mic-sm" onclick="dictateInto('rooferName', this)" title="Dictate">&#127908;</button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Evaluator</label>
+      <div class="field-input-wrap">
+        <input type="text" id="evaluatorName" placeholder="Inspector / Evaluator" />
+        <button class="mic-sm" onclick="dictateInto('evaluatorName', this)" title="Dictate">&#127908;</button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>File Location</label>
+      <div class="field-input-wrap">
+        <input type="text" id="fileLocation" placeholder="Folder path or reference" />
+        <button class="mic-sm" onclick="dictateInto('fileLocation', this)" title="Dictate">&#127908;</button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Private or LDI</label>
+      <div class="field-input-wrap">
+        <select id="privateOrLdi" style="font-family:'DM Mono',monospace;font-size:13px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--ink);width:100%;outline:none;transition:border-color 0.15s;cursor:pointer;">
+          <option value="">-- Select --</option>
+          <option value="Private">Private</option>
+          <option value="LDI">LDI</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="mic-row">
+    <div class="mic-wrapper">
+      <button class="mic-btn" id="micBtn" onclick="toggleMainMic()" title="Dictate notes">&#127908;</button>
+      <div class="mic-status" id="micStatus">tap to speak</div>
+    </div>
+    <div class="transcript-area" id="noteText" contenteditable="true" placeholder="Dictate or type your site notes here&#8230;"></div>
+  </div>
+  <div class="action-row">
+    <button class="btn btn-ghost" onclick="clearForm()">Clear</button>
+    <button class="btn btn-primary" onclick="addNote()">+ Add to Log</button>
+  </div>
+</div>
 
+<div class="table-wrap">
+  <div class="table-header">
+    <span class="note-count" id="noteCount">0 entries</span>
+    <span style="font-size:10px;color:var(--ink-muted);letter-spacing:.06em;">CLICK ANY CELL TO EDIT &bull; &#127908; TO DICTATE</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Date / Time</th>
+        <th>Property</th>
+        <th>Client</th>
+        <th>Roofer</th>
+        <th>Evaluator</th>
+        <th>File Location</th>
+        <th>Type</th>
+        <th>Notes</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="notesBody">
+      <tr><td colspan="9"><div class="empty-state"><span class="big">&#128203;</span>No entries yet. Fill in a property and dictate your first note.</div></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let notes = [];
+
+  // ── Speech Recognition ──────────────────────────────────────
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) document.getElementById('noSupport').style.display = 'block';
+
+  let activeRec = null;       // current SpeechRecognition instance
+  let activeTarget = null;    // DOM element being dictated into
+  let activeBtn = null;       // mic button currently lit up
+  let isMainMic = false;
+
+  function stopAnyRecording() {
+    if (activeRec) { try { activeRec.stop(); } catch(e){} activeRec = null; }
+    if (activeBtn) { activeBtn.classList.remove('recording'); activeBtn.textContent = '\uD83C\uDF99'; }
+    activeBtn = null; activeTarget = null;
+    document.getElementById('micBtn').classList.remove('recording');
+    document.getElementById('micBtn').textContent = '\uD83C\uDF99';
+    document.getElementById('micStatus').textContent = 'tap to speak';
+    isMainMic = false;
+  }
+
+  function startDictation(targetEl, btnEl, isMultiline) {
+    if (!SR) { showToast('Voice not supported \u2014 try Chrome'); return; }
+    // toggle off if same mic pressed again
+    if (activeBtn === btnEl) { stopAnyRecording(); return; }
+    stopAnyRecording();
+
+    activeTarget = targetEl;
+    activeBtn = btnEl;
+    btnEl.classList.add('recording');
+    btnEl.textContent = '\u23F9';
+
+    const rec = new SR();
+    rec.continuous = true;
+    rec.interimResults = true;
+    rec.lang = 'en-US';
+    activeRec = rec;
+
+    let base = isMultiline
+      ? (targetEl.innerText || '')
+      : (targetEl.value || '');
+
+    rec.onresult = function(e) {
+      let fin = '', interim = '';
+      for (let i = 0; i < e.results.length; i++) {
+        if (e.results[i].isFinal) fin += e.results[i][0].transcript + ' ';
+        else interim += e.results[i][0].transcript;
+      }
+      const val = (base + fin + interim).trim();
+      if (isMultiline) targetEl.innerText = val;
+      else targetEl.value = val;
+    };
+    rec.onend = function() {
+      if (activeRec === rec) rec.start(); // keep going until stopped
+    };
+    rec.onerror = function(ev) {
+      if (ev.error !== 'no-speech') { stopAnyRecording(); showToast('Mic error: ' + ev.error); }
+    };
+    rec.start();
+  }
+
+  // Main notes mic (big button)
+  function toggleMainMic() {
+    if (isMainMic) { stopAnyRecording(); return; }
+    isMainMic = true;
+    const el = document.getElementById('noteText');
+    const btn = document.getElementById('micBtn');
+    btn.classList.add('recording');
+    btn.textContent = '\u23F9';
+    document.getElementById('micStatus').textContent = 'recording\u2026';
+    startDictation(el, btn, true);
+    // override btn reference for status label
+    activeBtn = null; // let stopAnyRecording handle the big btn separately
+    // re-patch so stopAnyRecording also resets status label
+  }
+
+  // Simpler unified main mic
+  function toggleMainMic() {
+    if (!SR) { showToast('Voice not supported \u2014 try Chrome'); return; }
+    const btn = document.getElementById('micBtn');
+    if (btn.classList.contains('recording')) {
+      stopAnyRecording();
+      document.getElementById('micStatus').textContent = 'tap to speak';
+      return;
+    }
+    stopAnyRecording();
+    const el = document.getElementById('noteText');
+    btn.classList.add('recording');
+    btn.textContent = '\u23F9';
+    document.getElementById('micStatus').textContent = 'recording\u2026';
+
+    const rec = new SR();
+    rec.continuous = true;
+    rec.interimResults = true;
+    rec.lang = 'en-US';
+    activeRec = rec;
+    activeTarget = el;
+    isMainMic = true;
+
+    let base = el.innerText || '';
+    rec.onresult = function(e) {
+      let fin = '', interim = '';
+      for (let i = 0; i < e.results.length; i++) {
+        if (e.results[i].isFinal) fin += e.results[i][0].transcript + ' ';
+        else interim += e.results[i][0].transcript;
+      }
+      el.innerText = (base + fin + interim).trim();
+    };
+    rec.onend = function() { if (activeRec === rec) rec.start(); };
+    rec.onerror = function(ev) {
+      if (ev.error !== 'no-speech') {
+        stopAnyRecording();
+        document.getElementById('micStatus').textContent = 'tap to speak';
+        showToast('Mic error: ' + ev.error);
+      }
+    };
+    rec.start();
+  }
+
+  // Small field mic buttons in the form
+  function dictateInto(inputId, btnEl) {
+    const input = document.getElementById(inputId);
+    startDictation(input, btnEl, false);
+  }
+
+  // ── Notes CRUD ───────────────────────────────────────────────
+  function addNote() {
+    const address = document.getElementById('propAddress').value.trim();
+    const client  = document.getElementById('clientName').value.trim();
+    const roofer  = document.getElementById('rooferName').value.trim();
+    const evaluator = document.getElementById('evaluatorName').value.trim();
+    const fileLocation = document.getElementById('fileLocation').value.trim();
+    const privateOrLdi = document.getElementById('privateOrLdi').value;
+    const noteText  = document.getElementById('noteText').innerText.trim();
+    if (!noteText && !address) { showToast('Add a property and/or note first'); return; }
+    stopAnyRecording();
+    const now = new Date();
+    notes.unshift({
+      date: now.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
+      time: now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' }),
+      address, client, roofer, evaluator, fileLocation, privateOrLdi, note: noteText
+    });
+    renderTable();
+    clearForm();
+    showToast('Entry added \u2713');
+  }
+
+  function deleteNote(idx) {
+    notes.splice(idx, 1);
+    renderTable();
+    showToast('Entry removed');
+  }
+
+  // Save live edits back to notes array
+  function saveCell(idx, field, el) {
+    notes[idx][field] = el.innerText.trim();
+  }
+
+  // ── Render ───────────────────────────────────────────────────
+  const FIELDS = [
+    { key: 'address',      ph: 'No address' },
+    { key: 'client',       ph: 'No client' },
+    { key: 'roofer',       ph: 'No roofer' },
+    { key: 'evaluator',    ph: 'No evaluator' },
+    { key: 'fileLocation', ph: 'No file location' },
+    { key: 'note',         ph: 'No notes' }
+  ];
+
+  function renderTable() {
+    const body  = document.getElementById('notesBody');
+    const count = document.getElementById('noteCount');
+    count.textContent = notes.length + (notes.length === 1 ? ' entry' : ' entries');
+    if (notes.length === 0) {
+      body.innerHTML = '<tr><td colspan="9"><div class="empty-state"><span class="big">\uD83D\uDCCB</span>No entries yet.</div></td></tr>';
+      return;
+    }
+    body.innerHTML = '';
+    notes.forEach(function(n, i) {
+      const tr = document.createElement('tr');
+
+      // Date cell (not editable)
+      const tdDate = document.createElement('td');
+      tdDate.className = 'td-date';
+      tdDate.innerHTML = n.date + '<br>' + n.time;
+      tr.appendChild(tdDate);
+
+      // Editable cells
+      FIELDS.forEach(function(f) {
+        const td = document.createElement('td');
+        const wrap = document.createElement('div');
+        wrap.className = 'cell-wrap';
+
+        const span = document.createElement('div');
+        span.className = 'cell-text';
+        span.contentEditable = 'true';
+        span.spellcheck = false;
+        const val = n[f.key] || '';
+        if (!val) {
+          span.textContent = f.ph;
+          span.classList.add('placeholder-active');
+        } else {
+          span.textContent = val;
+        }
+
+        // Clear placeholder on focus
+        span.addEventListener('focus', function() {
+          if (span.classList.contains('placeholder-active')) {
+            span.textContent = '';
+            span.classList.remove('placeholder-active');
+          }
+        });
+        // Restore placeholder if left empty
+        span.addEventListener('blur', function() {
+          const v = span.innerText.trim();
+          notes[i][f.key] = v;
+          if (!v) {
+            span.textContent = f.ph;
+            span.classList.add('placeholder-active');
+          }
+        });
+
+        // Cell mic button
+        const micBtn = document.createElement('button');
+        micBtn.className = 'cell-mic';
+        micBtn.title = 'Dictate into this cell';
+        micBtn.textContent = '\uD83C\uDF99';
+        micBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (micBtn.classList.contains('recording')) {
+            stopAnyRecording();
+            return;
+          }
+          if (span.classList.contains('placeholder-active')) {
+            span.textContent = '';
+            span.classList.remove('placeholder-active');
+          }
+          span.focus();
+          startDictation(span, micBtn, true);
+        });
+
+        wrap.appendChild(span);
+        wrap.appendChild(micBtn);
+        td.appendChild(wrap);
+        tr.appendChild(td);
+      });
+
+      // Private / LDI dropdown cell
+      (function() {
+        const tdType = document.createElement('td');
+        const sel = document.createElement('select');
+        sel.style.cssText = 'font-family:\'DM Mono\',monospace;font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:6px 8px;color:var(--ink);margin:6px 10px;cursor:pointer;outline:none;';
+        [['','-- --'],['Private','Private'],['LDI','LDI']].forEach(function(opt) {
+          const o = document.createElement('option');
+          o.value = opt[0]; o.textContent = opt[1];
+          if (n.privateOrLdi === opt[0]) o.selected = true;
+          sel.appendChild(o);
+        });
+        sel.addEventListener('change', function() { notes[i].privateOrLdi = sel.value; });
+        tdType.appendChild(sel);
+        tr.appendChild(tdType);
+      })();
+
+      // Delete cell
+      const tdDel = document.createElement('td');
+      tdDel.className = 'td-actions';
+      const delBtn = document.createElement('button');
+      delBtn.className = 'td-delete';
+      delBtn.title = 'Remove entry';
+      delBtn.textContent = '\u2715';
+      delBtn.addEventListener('click', function() { deleteNote(i); });
+      tdDel.appendChild(delBtn);
+      tr.appendChild(tdDel);
+
+      body.appendChild(tr);
+    });
+  }
+
+  function clearForm() {
+    ['propAddress','clientName','rooferName','evaluatorName','fileLocation'].forEach(function(id) {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('privateOrLdi').value = '';
+    document.getElementById('noteText').innerText = '';
+    stopAnyRecording();
+    document.getElementById('micStatus').textContent = 'tap to speak';
+  }
+
+  // ── Export ───────────────────────────────────────────────────
+  function exportCSV() {
+    if (notes.length === 0) { showToast('No entries to export yet'); return; }
+    const headers = ['Date','Time','Property Address','Client','Roofer Name','Evaluator','File Location','Private or LDI','Notes'];
+    const rows = notes.map(function(n) {
+      return [n.date, n.time, n.address, n.client, n.roofer, n.evaluator, n.fileLocation, n.privateOrLdi, n.note].map(csvEsc);
+    });
+    const csv = [headers.join(','), ...rows.map(function(r){ return r.join(','); })].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'field_notes_' + new Date().toISOString().slice(0,10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('CSV exported \u2713');
+  }
+
+  function csvEsc(val) {
+    if (!val) return '""';
+    return '"' + String(val).replace(/"/g,'""') + '"';
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 2500);
+  }
+</script>
+</body>
+</html>
